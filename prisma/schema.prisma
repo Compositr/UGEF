@@ -14,8 +14,7 @@ model User {
   id String @id
 
   // Relations
-  scamguild   ScamGuild? @relation(fields: [scamguildId], references: [id])
-  scamguildId String?
+  scamguild   ScamGuild[]
 }
 
 model Invite {
