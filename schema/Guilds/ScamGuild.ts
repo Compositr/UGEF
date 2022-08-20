@@ -13,8 +13,10 @@ export const UnwrappedGuild = z.object({
   // Why this is a scam guild
   reason: z.string(),
   // Who discovered this guild
+  // Array to credit multiple people/groups
   credits: z.array(z.string()).nonempty(),
   // Guild admins
+  // This includes the Owner of the guild
   admins: z.array(User).nonempty(),
   invites: z.array(Invite),
   guildType: GuildType,
