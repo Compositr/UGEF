@@ -17,14 +17,6 @@ model User {
   scamguild   ScamGuild[]
 }
 
-model Invite {
-  id   String @id @default(cuid())
-  code String @unique
-
-  // Relations
-  scamguild   ScamGuild? @relation(fields: [scamguildId], references: [id], onDelete: Cascade)
-  scamguildId String?
-}
 
 model ScamGuild {
   id String @id
@@ -32,6 +24,6 @@ model ScamGuild {
   reason    String
   credits   String[]
   admins    User[]
-  invites   Invite[]
+  invites   String[]
   guildType String
 }
