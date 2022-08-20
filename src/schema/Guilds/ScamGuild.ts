@@ -14,7 +14,7 @@ export const UnwrappedGuild = z.object({
   reason: z.string(),
   // Who discovered this guild
   // Array to credit multiple people/groups
-  credits: z.array(z.string()).nonempty(),
+  credits: z.array(z.string()),
   // Guild admins
   // This includes the Owner of the guild
   admins: z.array(User).nonempty(),
