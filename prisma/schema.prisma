@@ -9,3 +9,32 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        String @id @default(cuid())
+  snowflake String @unique
+
+  // Relations
+  scamguild   ScamGuild? @relation(fields: [scamguildId], references: [id])
+  scamguildId String?
+}
+
+model Invite {
+  id   String @id @default(cuid())
+  code String @unique
+
+  // Relations
+  scamguild   ScamGuild? @relation(fields: [scamguildId], references: [id])
+  scamguildId String?
+}
+
+model ScamGuild {
+  id        String @id @default(cuid())
+  snowflake String @unique
+
+  reason    String
+  credits   String[]
+  admins    User[]
+  invites   Invite[]
+  guildType String
+}
