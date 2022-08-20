@@ -24,6 +24,6 @@ model ScamGuild {
   reason    String
   credits   String[]
   admins    User[]
-  invites   String[]
+  invites   String[] @unique
   guildType String
 }
