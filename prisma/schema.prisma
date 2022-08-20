@@ -11,8 +11,7 @@ datasource db {
 }
 
 model User {
-  id        String @id @default(cuid())
-  snowflake String @unique
+  id String @id
 
   // Relations
   scamguild   ScamGuild? @relation(fields: [scamguildId], references: [id])
@@ -20,7 +19,7 @@ model User {
 }
 
 model Invite {
-  id   String @id @default(cuid())
+  id   String @id
   code String @unique
 
   // Relations
@@ -29,8 +28,7 @@ model Invite {
 }
 
 model ScamGuild {
-  id        String @id @default(cuid())
-  snowflake String @unique
+  id String @id
 
   reason    String
   credits   String[]
