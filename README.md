@@ -40,3 +40,8 @@ Works with Vanity URLs as well. Only includes the invite code, does not include 
 > Regex matching Twitter Snowflakes
 
 Matches any valid Snowflake. Does not account for the Discord epoch.
+
+### **Object** `DataPacket`
+> Object to wrap other data types
+
+Object to wrap other data in a neat packet, ready for network transfer. Also includes SemVer information
