@@ -1,5 +1,7 @@
 import { Route } from "fastify-file-routes";
+import validationErrorToString from "../../../common/utility/validationErrorToString";
 import { UnwrappedSnowflake } from "../../../schema/formats/Snowflake";
+import ScamGuild from "../../../schema/Guilds/ScamGuild";
 
 export const routes: Route = {
   get: {
@@ -40,6 +42,67 @@ export const routes: Route = {
           reason: guild.reason,
         },
       };
+    },
+  },
+
+  post: {
+    handler: async function (req, res) {
+      if (req.headers.authorization !== process.env.APIKEY)
+        return res.unauthorized("Invalid API key");
+
+      const validBody = ScamGuild.safeParse(req);
+
+      if (!validBody.success)
+        return res.badRequest(validationErrorToString(validBody.error));
+
+      const { id } = req.params as any;
+      const {
+        $guild: { admins, credits, guildType, invites, reason },
+      } = validBody.data;
+
+      if (!UnwrappedSnowflake.safeParse(id).success)
+        return res.badRequest(`Invalid Snowflake`);
+
+      const guild = await this.prisma.scamGuild.findUnique({
+        where: {
+          id,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (guild)
+        return res.conflict(
+          `Guild with the same ID already exists in database`
+        );
+
+      try {
+        await this.prisma.scamGuild.create({
+          data: {
+            admins: {
+              connectOrCreate: admins.map((a) => ({
+                create: {
+                  id: a.$user.id,
+                },
+                where: {
+                  id: a.$user.id,
+                },
+              })),
+            },
+
+            guildType: guildType.$guildType,
+            id,
+            reason,
+            credits: credits,
+            invites: invites.map((i) => i.$invite),
+          },
+        });
+
+        return res.status(201).send();
+      } catch (err) {
+        return res.internalServerError(`Error creating ScamGuild`);
+      }
     },
   },
 };
