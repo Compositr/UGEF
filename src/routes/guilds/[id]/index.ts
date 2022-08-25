@@ -50,7 +50,7 @@ export const routes: Route = {
       if (req.headers.authorization !== process.env.APIKEY)
         return res.unauthorized("Invalid API key");
 
-      const validBody = ScamGuild.safeParse(req);
+      const validBody = ScamGuild.safeParse(req.body);
 
       if (!validBody.success)
         return res.badRequest(validationErrorToString(validBody.error));
@@ -83,10 +83,10 @@ export const routes: Route = {
             admins: {
               connectOrCreate: admins.map((a) => ({
                 create: {
-                  id: a.$user.id,
+                  id: a.$user.id.$snowflake,
                 },
                 where: {
-                  id: a.$user.id,
+                  id: a.$user.id.$snowflake,
                 },
               })),
             },
