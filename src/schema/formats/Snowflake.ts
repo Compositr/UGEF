@@ -6,10 +6,12 @@ import { z } from "zod";
  */
 export const UnwrappedSnowflake = z.string().regex(/^[0-9]{7,}$/);
 
-export const SnowflakeObject = z.object({
-  id: UnwrappedSnowflake,
-})
-
-export default z.object({
+const WrappedSnowflake = z.object({
   $snowflake: UnwrappedSnowflake,
 });
+
+export const SnowflakeObject = z.object({
+  id: WrappedSnowflake,
+});
+
+export default WrappedSnowflake;
