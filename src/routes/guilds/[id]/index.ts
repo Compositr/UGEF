@@ -35,7 +35,7 @@ export const routes: Route = {
             },
           })),
           credits: guild.credits,
-          guildType: guild.guildType as any,
+          guildType: { $guildType: guild.guildType },
           id: { $snowflake: guild.id },
           invites: guild.invites.map((i) => ({
             $invite: i,
