@@ -1,4 +1,5 @@
 import { Route } from "fastify-file-routes";
+import { z } from "zod";
 import validationErrorToString from "../../../common/utility/validationErrorToString";
 import { UnwrappedSnowflake } from "../../../schema/formats/Snowflake";
 import ScamGuild from "../../../schema/Guilds/ScamGuild";
@@ -28,20 +29,20 @@ export const routes: Route = {
         $guild: {
           admins: guild.admins.map((a) => ({
             $user: {
-              id: a.id,
+              id: {
+                $snowflake: a.id,
+              },
             },
-          })) as any,
+          })),
           credits: guild.credits,
           guildType: guild.guildType as any,
-          id: guild.id as any,
+          id: { $snowflake: guild.id },
           invites: guild.invites.map((i) => ({
-            $invite: {
-              code: i,
-            },
-          })) as any,
+            $invite: i,
+          })),
           reason: guild.reason,
         },
-      };
+      } as z.infer<typeof ScamGuild>;
     },
   },
 
