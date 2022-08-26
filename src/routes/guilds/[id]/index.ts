@@ -105,4 +105,63 @@ export const routes: Route = {
       }
     },
   },
+
+  patch: {
+    handler: async function (req, res) {
+      if (req.headers.authorization !== process.env.APIKEY)
+        return res.unauthorized("Invalid API key");
+
+      const validBody = ScamGuild.safeParse(req.body);
+
+      if (!validBody.success)
+        return res.badRequest(validationErrorToString(validBody.error));
+
+      const { id } = req.params as any;
+      const {
+        $guild: { admins, credits, guildType, invites, reason },
+      } = validBody.data;
+
+      if (!UnwrappedSnowflake.safeParse(id).success)
+        return res.badRequest(`Invalid Snowflake`);
+
+      const guild = await this.prisma.scamGuild.findUnique({
+        where: {
+          id,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (!guild) return res.notFound(`ScamGuild not found in database`);
+
+      try {
+        await this.prisma.scamGuild.update({
+          where: {
+            id: guild.id,
+          },
+          data: {
+            admins: {
+              connectOrCreate: admins.map((a) => ({
+                where: {
+                  id: a.$user.id.$snowflake,
+                },
+                create: {
+                  id: a.$user.id.$snowflake,
+                },
+              })),
+            },
+            credits,
+            guildType: guildType.$guildType,
+            invites: invites.map((i) => i.$invite),
+            reason,
+          },
+        });
+
+        return res.status(204).send();
+      } catch (err) {
+        return res.internalServerError(`Error patching ScamGuild`);
+      }
+    },
+  },
 };
