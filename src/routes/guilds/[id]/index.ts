@@ -21,7 +21,7 @@ export const routes: Route = {
       });
 
       if (!guild) {
-        return res.notFound(`Guild not found in database`);
+        return res.notFound(`ScamGuild not found in database`);
       }
 
       return {
@@ -74,7 +74,7 @@ export const routes: Route = {
 
       if (guild)
         return res.conflict(
-          `Guild with the same ID already exists in database`
+          `ScamGuild with the same ID already exists in database`
         );
 
       try {
