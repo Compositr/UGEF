@@ -3,6 +3,7 @@ import Invite from "../formats/Invite";
 import Snowflake from "../formats/Snowflake";
 import User from "../Users/User";
 import GuildType from "../formats/GuildType";
+import ISOString from "../../common/validation/base/ISOString";
 
 /**
  * @description An object representing a scam Discord Guild
@@ -20,6 +21,9 @@ export const UnwrappedGuild = z.object({
   admins: z.array(User).nonempty(),
   invites: z.array(Invite),
   guildType: GuildType,
+
+  // This must be a
+  discovered: ISOString,
 });
 
 export default z.object({

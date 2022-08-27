@@ -22,6 +22,8 @@ The following section describes the different schemas which can be found in `sch
 
 > Represents a scam Discord guild
 
+`ScamGuild.discovered` refers to when this ScamGuild was first discovered, and should not be modified when it is passed around.
+
 **Note:** Invites are optional, to include no invites simply use an empty `Array`.
 
 ### **Object** `User`
