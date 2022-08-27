@@ -25,6 +25,13 @@ export const routes: Route = {
           take: validatedQuery.data?.take,
           // Ternary operator is used to make sure
           skip: validatedQuery.data?.skip ?? validatedQuery.data.cursor ? 1 : 0,
+
+          where: {
+            discovered: {
+              gte: validatedQuery.data.from,
+              lte: validatedQuery.data.to,
+            },
+          },
         });
 
         const scamGuilds: z.infer<typeof ScamGuild>[] = guilds.map((g) => ({
@@ -43,6 +50,7 @@ export const routes: Route = {
               },
             })) as any,
             reason: g.reason,
+            discovered: g.discovered.toISOString(),
           },
         }));
 

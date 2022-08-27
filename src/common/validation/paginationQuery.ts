@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { UnwrappedSnowflake } from "../../schema/formats/Snowflake";
+import ISOString from "./base/ISOString";
 
 export default z
   .object({
@@ -9,5 +10,7 @@ export default z
       z.number().min(1).max(100).default(100)
     ),
     skip: z.preprocess((v) => Number(v), z.number()),
+    from: ISOString,
+    to: ISOString,
   })
   .passthrough();
