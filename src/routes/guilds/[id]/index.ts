@@ -41,6 +41,7 @@ export const routes: Route = {
             $invite: i,
           })),
           reason: guild.reason,
+          discovered: guild.discovered.toISOString(),
         },
       } as z.infer<typeof ScamGuild>;
     },
@@ -58,7 +59,7 @@ export const routes: Route = {
 
       const { id } = req.params as any;
       const {
-        $guild: { admins, credits, guildType, invites, reason },
+        $guild: { admins, credits, guildType, invites, reason, discovered },
       } = validBody.data;
 
       if (!UnwrappedSnowflake.safeParse(id).success)
@@ -97,6 +98,7 @@ export const routes: Route = {
             reason,
             credits: credits,
             invites: invites.map((i) => i.$invite),
+            discovered: new Date(discovered),
           },
         });
 
@@ -119,7 +121,7 @@ export const routes: Route = {
 
       const { id } = req.params as any;
       const {
-        $guild: { admins, credits, guildType, invites, reason },
+        $guild: { admins, credits, guildType, invites, reason, discovered },
       } = validBody.data;
 
       if (!UnwrappedSnowflake.safeParse(id).success)
@@ -156,6 +158,7 @@ export const routes: Route = {
             guildType: guildType.$guildType,
             invites: invites.map((i) => i.$invite),
             reason,
+            discovered: new Date(discovered),
           },
         });
 
