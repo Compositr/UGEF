@@ -26,5 +26,5 @@ model ScamGuild {
   invites   String[] @unique
   guildType String
 
-  createdAt DateTime @default(now())
+  discovered DateTime @default(now())
 }
