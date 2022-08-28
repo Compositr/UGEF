@@ -6,7 +6,18 @@ import fastifySensible from "@fastify/sensible";
 import prismaPlugin from "./plugins/prismaPlugin";
 
 const fastify = Fastify({
-  logger: false,
+  logger: {
+    transport:
+      process.env.NODE_ENV === "development"
+        ? {
+            target: "pino-pretty",
+            options: {
+              translateTime: "HH:MM:ss Z",
+              ignore: "pid,hostname",
+            },
+          }
+        : undefined,
+  },
   ignoreTrailingSlash: true,
 });
 
