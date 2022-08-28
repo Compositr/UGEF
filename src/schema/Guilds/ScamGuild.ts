@@ -18,7 +18,7 @@ export const UnwrappedGuild = z.object({
   credits: z.array(z.string()),
   // Guild admins
   // This includes the Owner of the guild
-  admins: z.array(User).nonempty(),
+  admins: z.array(User),
   invites: z.array(Invite),
   guildType: GuildType,
 

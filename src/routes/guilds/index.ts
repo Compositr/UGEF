@@ -38,9 +38,9 @@ export const routes: Route = {
           $guild: {
             admins: g.admins.map((a) => ({
               $user: {
-                id: a.id,
+                id: { $snowflake: a.id },
               },
-            })) as any,
+            })),
             credits: g.credits,
             guildType: { $guildType: g.guildType as any },
             id: { $snowflake: g.id },
