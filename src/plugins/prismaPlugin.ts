@@ -1,5 +1,5 @@
 import fp from "fastify-plugin";
-import { FastifyPluginAsync } from "fastify";
+import fastify, { FastifyPluginAsync } from "fastify";
 import { PrismaClient } from "@prisma/client";
 
 // Use TypeScript module augmentation to declare the type of server.prisma to be PrismaClient
@@ -19,6 +19,23 @@ const prismaPlugin: FastifyPluginAsync = fp(async (server, options) => {
 
   server.addHook("onClose", async (server) => {
     await server.prisma.$disconnect();
+  });
+
+  // Middlewares
+
+  // Logging
+  prisma.$use(async (params, next) => {
+    const before = Date.now();
+
+    const result = await next(params);
+
+    const after = Date.now();
+
+    server.log.info(
+      `Query ${params.model}.${params.action} took ${after - before}ms`
+    );
+
+    return result;
   });
 });
 
