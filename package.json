@@ -6,14 +6,17 @@
   "dependencies": {
     "@fastify/helmet": "^9.1.0",
     "@fastify/sensible": "^5.1.0",
+    "@fastify/websocket": "^7.0.1",
     "@prisma/client": "4.2.1",
     "fastify": "^4.5.2",
     "fastify-file-routes": "^1.1.2",
     "prisma": "^4.2.1",
+    "secure-json-parse": "^2.5.0",
     "zod": "^3.18.0"
   },
   "devDependencies": {
     "@types/node": "^18.7.8",
+    "@types/ws": "^8.5.3",
     "nodemon": "^2.0.19",
     "pino-pretty": "^9.1.0",
     "rimraf": "^3.0.2",
