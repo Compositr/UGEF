@@ -4,6 +4,7 @@ import { fileRoutes } from "fastify-file-routes";
 import path from "path";
 import fastifySensible from "@fastify/sensible";
 import prismaPlugin from "./plugins/prismaPlugin";
+import fastifyWebsocket from "@fastify/websocket"
 
 const fastify = Fastify({
   logger: {
@@ -26,6 +27,7 @@ const start = async () => {
   await fastify.register(fastifyHelmet);
   await fastify.register(fastifySensible);
   await fastify.register(prismaPlugin);
+  await fastify.register(fastifyWebsocket)
 
   // Routing
   await fastify.register(fileRoutes, {
