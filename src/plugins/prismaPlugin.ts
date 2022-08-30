@@ -1,6 +1,8 @@
 import fp from "fastify-plugin";
 import fastify, { FastifyPluginAsync } from "fastify";
 import { PrismaClient } from "@prisma/client";
+import toScamGuild from "../common/utility/convert/ScamGuild";
+import { inspect } from "node:util";
 
 // Use TypeScript module augmentation to declare the type of server.prisma to be PrismaClient
 declare module "fastify" {
@@ -36,6 +38,42 @@ const prismaPlugin: FastifyPluginAsync = fp(async (server, options) => {
     );
 
     return result;
+  });
+
+  prisma.$use(async (params, next) => {
+    if (params.action === "create" && params.model === "ScamGuild") {
+      const result: any = await next(params);
+
+      const guild = await prisma.scamGuild.findUnique({
+        where: { id: result.id },
+        include: {
+          admins: true,
+        },
+      });
+
+      server.log.info(guild);
+
+      if (guild) {
+        server.log.info(inspect(server.wsSockets));
+        for (const socket of server.wsSockets.values()) {
+          if (!socket.auth) continue;
+          try {
+            socket.ws.send(
+              JSON.stringify({
+                e: "SCAM_GUILD_CREATED",
+                data: toScamGuild(guild),
+              })
+            );
+          } catch (err) {
+            server.log.error(`Failed to send message to WebSocket`, { err });
+          }
+        }
+      }
+
+      return result;
+    }
+
+    return next(params);
   });
 });
 

@@ -6,7 +6,7 @@ import { WebSocket } from "ws";
 // Use TypeScript module augmentation to declare the type of server.prisma to be PrismaClient
 declare module "fastify" {
   interface FastifyInstance {
-    wsSockets: Map<string, WebSocket>;
+    wsSockets: Map<string, { auth: boolean; ws: WebSocket }>;
   }
 }
 
