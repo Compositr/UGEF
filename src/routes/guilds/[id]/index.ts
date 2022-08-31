@@ -1,5 +1,6 @@
 import { Route } from "fastify-file-routes";
 import { z } from "zod";
+import toScamGuild from "../../../common/utility/convert/ScamGuild";
 import validationErrorToString from "../../../common/utility/validationErrorToString";
 import { UnwrappedSnowflake } from "../../../schema/formats/Snowflake";
 import ScamGuild from "../../../schema/Guilds/ScamGuild";
@@ -25,25 +26,7 @@ export const routes: Route = {
         return res.notFound(`ScamGuild not found in database`);
       }
 
-      return {
-        $guild: {
-          admins: guild.admins.map((a) => ({
-            $user: {
-              id: {
-                $snowflake: a.id,
-              },
-            },
-          })),
-          credits: guild.credits,
-          guildType: { $guildType: guild.guildType },
-          id: { $snowflake: guild.id },
-          invites: guild.invites.map((i) => ({
-            $invite: i,
-          })),
-          reason: guild.reason,
-          discovered: guild.discovered.toISOString(),
-        },
-      } as z.infer<typeof ScamGuild>;
+      return toScamGuild(guild);
     },
   },
 
