@@ -38,7 +38,14 @@ export const routes: Route = {
             // Drop repeate auths
             if (isAuthenticated) return;
             const { token } = data;
-            if (token !== "super-secret-token") {
+
+            const wstoken = await this.prisma.wSToken.findUnique({
+              where: {
+                token,
+              },
+            });
+
+            if (!wstoken) {
               socket.send(JSON.stringify({ e: WSEvents.Enum.AUTH_FAILURE }));
               this.wsSockets.delete(uuid);
               return socket.close();
@@ -77,7 +84,7 @@ export const routes: Route = {
             // Clients should never send unknown stuff
             socket.close();
             this.wsSockets.delete(uuid);
-            
+
             break;
           }
         }

@@ -28,3 +28,9 @@ model ScamGuild {
 
   discovered DateTime @default(now())
 }
+
+model WSToken {
+  id        String @id @default(cuid())
+  token     String @unique
+  belongsTo String
+}
