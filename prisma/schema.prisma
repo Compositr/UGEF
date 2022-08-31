@@ -34,3 +34,9 @@ model WSToken {
   token     String @unique
   belongsTo String
 }
+
+model RESTAPIToken {
+  id        String @id @default(cuid())
+  token     String @unique
+  belongsTo String
+}

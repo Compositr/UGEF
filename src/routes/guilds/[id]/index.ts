@@ -32,8 +32,10 @@ export const routes: Route = {
 
   post: {
     handler: async function (req, res) {
-      if (req.headers.authorization !== process.env.APIKEY)
-        return res.unauthorized("Invalid API key");
+      const restapikey = await this.prisma.rESTAPIToken.findUnique({
+        where: { token: req.headers.authorization },
+      });
+      if (!restapikey) return res.unauthorized("Invalid API key");
 
       const validBody = ScamGuild.safeParse(req.body);
 
@@ -94,8 +96,10 @@ export const routes: Route = {
 
   patch: {
     handler: async function (req, res) {
-      if (req.headers.authorization !== process.env.APIKEY)
-        return res.unauthorized("Invalid API key");
+      const restapikey = await this.prisma.rESTAPIToken.findUnique({
+        where: { token: req.headers.authorization },
+      });
+      if (!restapikey) return res.unauthorized("Invalid API key");
 
       const validBody = ScamGuild.safeParse(req.body);
 
