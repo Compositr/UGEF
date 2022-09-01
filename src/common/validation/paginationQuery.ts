@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { UnwrappedGuildType } from "../../schema/formats/GuildType";
 import { UnwrappedSnowflake } from "../../schema/formats/Snowflake";
 import ISOString from "./base/ISOString";
 
@@ -14,5 +15,6 @@ export default z
     to: ISOString,
     orderBy: z.enum(["discovered", "guildType"]),
     orderByOrder: z.enum(["asc", "desc"]),
+    guildType: UnwrappedGuildType
   })
   .passthrough();

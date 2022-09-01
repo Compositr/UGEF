@@ -31,6 +31,7 @@ export const routes: Route = {
               gte: validatedQuery.data.from,
               lte: validatedQuery.data.to,
             },
+            guildType: validatedQuery.data.guildType,
           },
 
           orderBy:
