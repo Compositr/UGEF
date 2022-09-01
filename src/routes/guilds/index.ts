@@ -32,6 +32,17 @@ export const routes: Route = {
               lte: validatedQuery.data.to,
             },
           },
+
+          orderBy:
+            validatedQuery.data?.orderBy &&
+            validatedQuery.data.orderByOrder !== undefined
+              ? {
+                  [validatedQuery.data?.orderBy]:
+                    validatedQuery.data.orderByOrder,
+                }
+              : {
+                  discovered: "desc",
+                },
         });
 
         const scamGuilds: z.infer<typeof ScamGuild>[] = guilds.map((g) => ({
