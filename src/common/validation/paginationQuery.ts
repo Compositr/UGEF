@@ -12,5 +12,7 @@ export default z
     skip: z.preprocess((v) => Number(v), z.number()),
     from: ISOString,
     to: ISOString,
+    orderBy: z.enum(["discovered", "guildType"]),
+    orderByOrder: z.enum(["asc", "desc"]),
   })
   .passthrough();
