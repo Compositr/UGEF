@@ -8,7 +8,7 @@ import crypto from "node:crypto";
 
 export const routes: Route = {
   get: {
-    handler: async function (
+    handler: function (
       this: FastifyInstance,
       conn: SocketStream,
       req: FastifyRequest
