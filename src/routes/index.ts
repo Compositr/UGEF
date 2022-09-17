@@ -17,6 +17,7 @@ export const routes: Route = {
       const leastCommonGuildType = guildTypesAggregate.sort(
         (a, b) => a._count._all - b._count._all
       )[0].guildType;
+      
       res.status(200).send({
         guilds,
         version: pkg.version,

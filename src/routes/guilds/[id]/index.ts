@@ -32,9 +32,11 @@ export const routes: Route = {
 
   post: {
     handler: async function (req, res) {
+      // Check for REST API token
       const restapikey = await this.prisma.rESTAPIToken.findUnique({
-        where: { token: req.headers.authorization },
+        where: { token: req.headers.authorization ?? "" },
       });
+
       if (!restapikey) return res.unauthorized("Invalid API key");
 
       const validBody = ScamGuild.safeParse(req.body);
